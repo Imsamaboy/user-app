@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  postgres:
+    container_name: vk_postgres_container
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "5432:5432"
+    
+#  flyway:
+#    image: boxfuse/flyway:5.2.4
+#    container_name: flyway-service
+#    command: "migrate"
+#    volumes:
+#      - ./Flyway/conf:/flyway/conf
+#      - ./Flyway/sql:/flyway/sql
+#    depends_on:
+#      - sql-server
