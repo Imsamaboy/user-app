@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using vk_testing.Context;
 using vk_testing.Models;
 using vk_testing.Repositories.Interfaces;
 
@@ -6,52 +7,69 @@ namespace vk_testing.Repositories.Implementations;
 
 public class UserRepository : IUserRepository
 {
-    private readonly DbContext _dbContext;
+    private readonly ApplicationContext _context;
 
-    public UserRepository(DbContext dbContext)
+    public UserRepository(ApplicationContext context)
     {
-        _dbContext = dbContext;
+        _context = context;
     }
+    
+    private IQueryable<User> Users => _context.Users
+                                              .Include(x => x.UserState)
+                                              .Where(x => x.UserState.Code != StateCode.Blocked)
+                                              .Include(x => x.UserGroup);
 
-    // TODO: Optional проверки
     public async Task<User> GetUserById(Guid id)
     {
-        return await _dbContext.Set<User>().FirstOrDefaultAsync(u => u.UserId == id);
+        return await Users.FirstAsync(user => user.UserId == id);
     }
 
     public async Task<IEnumerable<User>> GetAllUsers()
     {
-        return await _dbContext.Set<User>().ToListAsync();
+        return await Users.ToListAsync();
+    }
+    
+    public async Task<IEnumerable<User>> GetPagedUsers(int offset, int pageSize) 
+    {
+        return await Users.OrderByDescending(user => user.UserId)
+                          .Skip(offset)
+                          .Take(pageSize)
+                          .ToListAsync();
+    }
+    
+    public async Task<User> CreateUser(User user) 
+    {
+        var createdUser = _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+        return createdUser.Entity;
+    }
+    
+    public async Task<User> UpdateUser(User user) 
+    {
+        var updatedEntry = _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+        return updatedEntry.Entity;
+    }
+    
+    public async Task<User> DeleteUser(User user) 
+    {
+        var removedEntry = _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+        return removedEntry.Entity;
     }
 
-    public async Task<IEnumerable<User>> GetPagedUsers(int pageNumber, int pageSize)
+    public async Task<User?> TryGetById(Guid id) 
     {
-        return await _dbContext.Set<User>()
-            .OrderBy(u => u.CreatedDate)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+        return await Users.FirstOrDefaultAsync(user => user.UserId == id);
     }
-
-    public async Task CreateUser(User user)
+    
+    public async Task<bool> IsAdminExist() 
     {
-        await _dbContext.Set<User>().AddAsync(user);
-        await _dbContext.SaveChangesAsync();
+        return await Users.AnyAsync(user => user.UserGroup.Code == GroupCode.Admin);
     }
-
-    public async Task UpdateUser(User user)
+    
+    public async Task<bool> IsLoginExist(string login) 
     {
-        _dbContext.Set<User>().Update(user);
-        await _dbContext.SaveChangesAsync();
-    }
-
-    public async Task DeleteUser(Guid id)
-    {
-        var user = await GetUserById(id);
-        if (user != null)
-        {
-            _dbContext.Set<User>().Remove(user);
-            await _dbContext.SaveChangesAsync();
-        }
+        return await Users.AnyAsync(user => user.Login == login);
     }
 }

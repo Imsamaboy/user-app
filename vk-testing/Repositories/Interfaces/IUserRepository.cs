@@ -4,10 +4,15 @@ namespace vk_testing.Repositories.Interfaces;
 
 public interface IUserRepository
 {
-    Task<User> GetUserById(Guid id);
-    Task<IEnumerable<User>> GetAllUsers();
-    Task<IEnumerable<User>> GetPagedUsers(int pageNumber, int pageSize);
-    Task CreateUser(User user);
-    Task UpdateUser(User user);
-    Task DeleteUser(Guid id);
+    public Task<User> GetUserById(Guid id);
+    public Task<IEnumerable<User>> GetAllUsers();
+    public Task<IEnumerable<User>> GetPagedUsers(int pageNumber, int pageSize);
+    public Task<User> CreateUser(User user);
+    public Task<User> UpdateUser(User user);
+    public Task<User> DeleteUser(User user);
+    
+    // ?
+    public Task<User?> TryGetById(Guid id);
+    public Task<bool> IsAdminExist();
+    public Task<bool> IsLoginExist(string predicate);
 }

@@ -6,10 +6,16 @@ namespace vk_testing.Models;
 public class UserState
 {
     [Key, ForeignKey("User")]
+    [Column("user_state_id")]
     public long UserStateId { get; set; }
-    public string Code { get; set; }
+    
+    [Required]
+    [Column("code")]
+    public StateCode Code { get; set; }
+    
+    [Required]
+    [Column("description")]
     public string Description { get; set; }
-
-    // Navigation properties
+    
     public virtual User User { get; set; }
 }

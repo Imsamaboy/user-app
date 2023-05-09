@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using vk_testing.Models;
+using vk_testing.Dtos;
 using vk_testing.Services.Interfaces;
 
 namespace vk_testing.Controllers;
@@ -15,49 +15,45 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpGet]
-    public IActionResult GetUsers()
-    {
-        var users = _userService.GetAllUsers();
-        return new JsonResult(users);
-    }
-
+    
     [HttpGet("{id}")]
-    public IActionResult GetUser(Guid id)
+    public async Task<IActionResult> GetUserById(Guid id)
     {
-        var user = _userService.GetUserById(id);
-        if (user == null)
-        {
-            return NotFound();
-        }
-        return new JsonResult(user);
+        var user = await _userService.GetUserById(id);
+        return Ok(user);
     }
 
-    // TODO: Create UserDto, add mapper
-    [HttpPost]
-    public IActionResult AddUser([FromBody] UserDto userDto)
+    [HttpGet]
+    public async Task<IActionResult> GetAllUsers()
     {
-        var user = _mapper.Map<User>(userDto);
-        _userService.CreateUser(user);
-        return new JsonResult(user);
-    }
-
-    [HttpDelete("{id}")]
-    public IActionResult DeleteUser(Guid id)
-    {
-        var user = _userService.GetUserById(id);
-        if (user == null)
-        {
-            return NotFound();
-        }
-        _userService.DeleteUser(id);
-        return new JsonResult(user);
+        var users = await _userService.GetAllUsers();
+        return Ok(users);
     }
 
     [HttpGet("paged")]
-    public IActionResult GetUsersPaged(int pageNumber = 1, int pageSize = 10)
+    public async Task<IActionResult> GetPagedUsers(Page page)
     {
-        var users = _userService.GetPagedUsers(pageNumber, pageSize);
-        return new JsonResult(users);
+        if (!page.IsInValidState)
+            return BadRequest();
+        var users = await _userService.GetPagedUsers(page);
+        return Ok(users);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)));
+
+        var user = await _userService.CreateUser(createUserDto);
+        // TODO: Change to created
+        return Ok(user);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(Guid id)
+    {
+        var user = await _userService.DeleteUser(id);
+        return Ok(user);
     }
 }

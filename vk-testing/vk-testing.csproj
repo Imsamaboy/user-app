@@ -21,9 +21,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+        <Folder Include="Repositories\" />
+        <Folder Include="Services\" />
+        <Folder Include="Middlewares\" />
     </ItemGroup>
 
 </Project>
