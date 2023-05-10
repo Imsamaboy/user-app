@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vk-testing", "vk-testing\vk-testing.csproj", "{08E7F99F-2644-4407-9509-5CD83BC1F87F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vk-unit-testing", "vk-unit-testing\vk-unit-testing.csproj", "{29E0DE64-A163-4916-BEDE-A98E9FAF706F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{08E7F99F-2644-4407-9509-5CD83BC1F87F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08E7F99F-2644-4407-9509-5CD83BC1F87F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08E7F99F-2644-4407-9509-5CD83BC1F87F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29E0DE64-A163-4916-BEDE-A98E9FAF706F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29E0DE64-A163-4916-BEDE-A98E9FAF706F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29E0DE64-A163-4916-BEDE-A98E9FAF706F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29E0DE64-A163-4916-BEDE-A98E9FAF706F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
