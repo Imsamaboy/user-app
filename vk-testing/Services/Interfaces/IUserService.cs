@@ -5,9 +5,9 @@ namespace vk_testing.Services.Interfaces;
 
 public interface IUserService
 {
-    Task<User> GetUserById(Guid id);
-    Task<IEnumerable<User>> GetAllUsers();
-    Task<IEnumerable<User>> GetPagedUsers(Page page);
-    Task<User> CreateUser(CreateUserDto createUserDto);
-    Task<User> DeleteUser(Guid id);
+    Task<UserDto> GetUserById(Guid id);
+    Task<IEnumerable<UserDto>> GetAllUsers();
+    Task<IEnumerable<UserDto>> GetPagedUsers(Page page);
+    Task<UserDto> CreateUser(CreateUserDto createUserDto);
+    Task<UserDto> DeleteUser(Guid id);
 }

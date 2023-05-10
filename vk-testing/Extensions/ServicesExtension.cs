@@ -21,6 +21,8 @@ public static class ServicesExtension
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserGroupRepository, UserGroupRepository>();
+        services.AddScoped<IUserStateRepository, UserStateRepository>();
     }
 
     public static void AddHelpers(this IServiceCollection services)

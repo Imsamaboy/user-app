@@ -1,21 +1,28 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace vk_testing.Models;
 
 public class UserGroup
 {
-    [Key, ForeignKey("User")]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("user_group_id")]
-    public long UserGroupId { get; set; }
-    
+    public Guid UserGroupId { get; set; }
+
     [Required]
+    [MaxLength(50)]
     [Column("code")]
     public GroupCode Code { get; set; }
-    
+
     [Required]
+    [MaxLength(50)]
     [Column("description")]
     public string Description { get; set; }
+
+    [JsonIgnore]
+    public virtual ICollection<User> Users { get; set; }
     
-    public virtual User User { get; set; }
+    public string DisplayCode => Enum.GetName(Code)!;
 }

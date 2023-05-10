@@ -49,7 +49,6 @@ public class BasicAuthMiddleware
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
             return;
         }
-
         await _next.Invoke(context);
     }
 }

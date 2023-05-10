@@ -1,29 +1,3 @@
-// var builder = WebApplication.CreateBuilder(args);
-//
-// // Add services to the container.
-//
-// builder.Services.AddControllers();
-// // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-// builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen();
-//
-// var app = builder.Build();
-//
-// // Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
-//
-// app.UseHttpsRedirection();
-//
-// app.UseAuthorization();
-//
-// app.MapControllers();
-//
-// app.Run();
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using vk_testing.Context;
@@ -48,9 +22,9 @@ public class Program
         {
             option.AddSecurityDefinition("Basic", new OpenApiSecurityScheme
             {
-                Description = "Header for test task: Basic YWRtaW46MTIz" +
-                              "<br/>Write down it in the field below and click 'Authorize'" +
-                              "<br/>YWRtaW46MTIz is Base64 code of 'admin:123'",
+                Description = "Header для тестового задания: Basic YWRtaW46MTIz" +
+                              "<br/>Впишите его в поле и нажмите 'Authorize'" +
+                              "<br/>YWRtaW46MTIz это Base64 code для админ пользователя 'admin:123'",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
@@ -89,6 +63,10 @@ public class Program
         app.UseMiddleware<BasicAuthMiddleware>();
         app.MapControllers();
         using var scope = app.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+        if (context.Database.GetPendingMigrations().Any()) {
+            context.Database.Migrate();
+        }
         scope.ServiceProvider.GetService<ApplicationContext>();
     }
 

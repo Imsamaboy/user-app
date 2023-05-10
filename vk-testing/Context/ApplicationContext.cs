@@ -25,12 +25,12 @@ public class ApplicationContext: DbContext
         });
         modelBuilder.Entity<UserGroup>(g =>
         {
-            g.HasData(new UserGroup { UserGroupId = 1, Code = GroupCode.Admin }, new UserGroup { UserGroupId = 2, Code = GroupCode.User });
+            g.HasData(new UserGroup { UserGroupId = Guid.NewGuid(), Code = GroupCode.Admin, Description = "Admin role" }, new UserGroup { UserGroupId = Guid.NewGuid(), Code = GroupCode.User, Description = "User role" });
             g.HasIndex(_ => _.Code).IsUnique();
         });
         modelBuilder.Entity<UserState>(s =>
         {
-            s.HasData(new UserState { UserStateId = 1, Code = StateCode.Active }, new UserState { UserStateId = 2, Code = StateCode.Blocked });
+            s.HasData(new UserState { UserStateId = Guid.NewGuid(), Code = StateCode.Active, Description = "Active user status"}, new UserState { UserStateId = Guid.NewGuid(), Code = StateCode.Blocked, Description = "Blocked user status" });
             s.HasIndex(_ => _.Code).IsUnique();
         });
     }

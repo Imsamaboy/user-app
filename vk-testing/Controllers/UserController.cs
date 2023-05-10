@@ -31,7 +31,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("paged")]
-    public async Task<IActionResult> GetPagedUsers(Page page)
+    public async Task<IActionResult> GetPagedUsers([FromQuery] Page page)
     {
         if (!page.IsInValidState)
             return BadRequest();

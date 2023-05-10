@@ -6,6 +6,6 @@ public class AuthorizationService: IAuthService
 {
     public bool HasUserAccess(string username, string password)
     {
-        return username == "admin" && password == "root";
+        return username == "admin" && password == "123";
     }
 }
